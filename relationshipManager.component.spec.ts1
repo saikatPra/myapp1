@@ -1,0 +1,93 @@
+import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+
+import {By} from '@angular/platform-browser';
+import {DebugElement} from '@angular/core';
+
+import {Heroes, FakeHeroService} from './testing';
+
+import {AppModule} from './app.module';
+
+import { AppComponent } from './app.component';
+
+import { RelationshipManagerService } from './relationshipManager.service';
+import { RelationshipManager } from './relationshipManager';
+//import { MockService } from './mock-service';
+
+
+const Hero_Obj: RelationshipManager[] = [new RelationshipManager(42, 'Saikat1')];
+
+class MockService {
+  get() {
+    return Promise.resolve(Hero_Obj);
+  }
+}
+
+let comp: AppComponent;
+let fixture: ComponentFixture<AppComponent>;
+let page: Page;
+let heroService: RelationshipManagerService;
+
+describe('AppComponent', () => {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations : [AppComponent],
+      providers: [
+        {provide: RelationshipManagerService, useClass: FakeHeroService}
+      ]
+    })
+    .compileComponents()
+    .then(createComponent);
+  }));
+
+  it('should display heroes', () => {
+    expect(page.heroRows.length).toBeGreaterThan(0);
+  });
+  it('1st RelationshipManager should match 1st test RelationshipManager', () => {
+    const expectedHero = Heroes[0];
+    const actualHero = page.heroRows[0].textContent;
+    expect(actualHero).toContain(expectedHero.name, 'RelationshipManager.name');
+  });
+  it('should select RelationshipManager on click', fakeAsync(() => {
+    const textLabel: DebugElement[] =
+      fixture.debugElement.queryAll( By.css( 'li' ) );
+    const expectedHero = Heroes[0];
+    const li = page.heroRows[0];
+    li.dispatchEvent( new Event( 'click' ) );
+    tick();
+    fixture.detectChanges();
+    expect(comp.selectedHero).toEqual(expectedHero);
+    expect( textLabel[0].classes[ 'selected' ] ).toBe( true );
+  }));
+
+  /*it('should color header on select', () => {
+    const textLabel: DebugElement =
+      fixture.debugElement.query( By.css( 'li' ) );
+
+    const h2 = page.heroRows[0];
+    const bgColor = h2.style.background;
+
+    // different browsers report color values differently
+    const isExpectedColor = bgColor === 'green';
+    expect(isExpectedColor).toBe(true, 'backgroundColor');
+  });*/
+
+});
+function createComponent() {
+  fixture = TestBed.createComponent(AppComponent);
+  comp = fixture.componentInstance;
+  relationshipManagerService = TestBed.get(RelationshipManagerService);
+  fixture.detectChanges();
+
+  return fixture.whenStable().then(() => {
+    fixture.detectChanges();
+    page = new Page();
+  });
+}
+class Page {
+  heroRows: HTMLLIElement[];
+  highlightDe: DebugElement;
+  navSpy: jasmine.Spy;
+  constructor() {
+    this.heroRows = fixture.debugElement.queryAll(By.css('li')).map(de => de.nativeElement);
+  };
+}

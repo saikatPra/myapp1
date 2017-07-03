@@ -1,0 +1,19 @@
+[{
+	"id": "12",
+	"name": "Christoph Schmidt",
+	"title": "Ihr persönlicher Berater",
+	"isVisible": true,
+	"phoneNo": "(040) 5345 6534 21",
+  "email": "christoph.schmidt@db.com",
+	"imageAvailable": true,
+	"imageUrl": "assets/images/Chrysanthemum.jpg"
+}, {
+	"id": "13",
+	"name": "Ute Musterfrau",
+	"title": "Spezialberater Zalhungsverkher",
+	"isVisible": false,
+	"phoneNo": "(030) 1234 1233 11",
+  "email": "ute.musterfrau@db.com",
+	"imageAvailable": true,
+	"imageUrl": "assets/images/Desert.jpg"
+}]

@@ -1,0 +1,12 @@
+<div *ngFor="let rm of appresponse;">
+  <div *ngIf="rm.isVisible">
+     <div class="">
+          <div class="relationshipManager-headerContainer">
+            <img class="relationshipManager-iconAvator" src="{{rm.imageUrl}}" />
+              <span class="relationshipManager-person">{{rm.title}}</span><br/>
+              <span #titleSpan class="relationshipManager-titleName">{{rm.name}}</span>
+          </div>
+        </div>
+  </div>
+
+</div>
